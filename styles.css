@@ -38,6 +38,10 @@ body {
 .currency-box p {
     margin-right: 10px;
 }
+select, option {
+    font-size: 16px;
+    padding: 2px 5px;
+}
 #uah {
     display: block;
     border-radius: 0.25rem;
