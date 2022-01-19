@@ -1,11 +1,14 @@
 const $container = document.querySelector('.container')
 const $date = document.querySelector('.date-box')
 const $currencyBox = document.querySelector('.currency-box')
-const $input = document.querySelector('#uah');
+const $input = document.querySelector('input');
 const $converterBox = document.querySelector('.converter-box')
 const $select = document.querySelector('.select')
 let $resultsHolder = document.createElement('div')
-
+// setInputFilter(document.getElementById("input"), function(value) {
+//     return /^\d*\.?\d*$/.test(value);
+// });
+// setInputFilter()
 function defineOptionValues() {
     const currencyNames = ['usd', 'eur', 'rub', 'uah'];
     let $options = $select.querySelectorAll('option')
@@ -45,17 +48,20 @@ async function showCurrency() {
 }
 showCurrency().then(resultArray => {
     let $rub = document.createElement('div')
+    $rub.innerHTML = 'RUB'
     let $usd = document.createElement('div')
+    $usd.innerHTML = '<span>USD</span>'
     let $eur = document.createElement('div')
+    $eur.innerHTML = '<span>EUR</span>'
     let $uah = document.createElement('div')
-
+    $uah.innerHTML = '<span>UAH</span>'
 
     document.querySelector('form').addEventListener('change', function () {
         let resultNumbers = getResultNumbers($select.selectedIndex)
         let $resultCurrencies =  [$rub, $usd, $eur, $uah]
         $resultsHolder.classList.add('results-holder')
-
-        function getResultNumbers(i) {
+        // if($input.value)
+        function getResultNumbers() {
             let result = [+$input.value];
             if ($select.selectedIndex === 0) {
                 let rubToUah = resultArray[0].rate * $input.value
@@ -86,7 +92,8 @@ showCurrency().then(resultArray => {
             let index2 = 0;
             function cortege(i1, i2) {
                 console.log($resultCurrencies[i1])
-                return $resultCurrencies[i1].innerHTML = String(resultNumbers[i2])
+                let n = resultNumbers[i2].toFixed(2)
+                return $resultCurrencies[i1].innerHTML = String(n)
             }
 
     for (let i = 0; i < 4; i++) {
