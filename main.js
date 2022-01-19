@@ -5,10 +5,7 @@ const $input = document.querySelector('input');
 const $converterBox = document.querySelector('.converter-box')
 const $select = document.querySelector('.select')
 let $resultsHolder = document.createElement('div')
-// setInputFilter(document.getElementById("input"), function(value) {
-//     return /^\d*\.?\d*$/.test(value);
-// });
-// setInputFilter()
+
 function defineOptionValues() {
     const currencyNames = ['usd', 'eur', 'rub', 'uah'];
     let $options = $select.querySelectorAll('option')
@@ -29,15 +26,18 @@ defineOptionValues()
 async function showCurrency() {
     let response = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json')
         let allCurrencies = await response.json()
-        let result = allCurrencies.filter((currency) => currency.r030 === 840 || currency.r030 === 978 || currency.r030 === 643)
+        let result = allCurrencies.filter((currency) => currency.r030 === 978 || currency.r030 === 643 ||  currency.r030 === 840)
+    let [rub, usd, eur] = result;
+    let newArr = [usd, eur, rub]
     return new Promise((resolve => {
-             resolve(result.map(item => {
+             resolve(newArr.map(item => {
                         const $currencyWrapper = document.createElement('div')
                         $currencyWrapper.classList.add('currency-wrapper')
                         const $currencyName = document.createElement('p')
                         const $rate = document.createElement('p');
                         $currencyName.innerHTML = item.txt;
                         $rate.innerHTML = item.rate + ' грн';
+                 console.log($rate)
                         $currencyWrapper.append($currencyName, $rate)
                         $currencyBox.append($currencyWrapper);
                         return item
@@ -47,60 +47,67 @@ async function showCurrency() {
 
 }
 showCurrency().then(resultArray => {
-    let $rub = document.createElement('div')
-    $rub.innerHTML = 'RUB'
-    let $usd = document.createElement('div')
-    $usd.innerHTML = '<span>USD</span>'
-    let $eur = document.createElement('div')
-    $eur.innerHTML = '<span>EUR</span>'
-    let $uah = document.createElement('div')
-    $uah.innerHTML = '<span>UAH</span>'
+    let $value1 = document.createElement('div')
+    let $value2 = document.createElement('div')
+    let $value3 = document.createElement('div')
 
     document.querySelector('form').addEventListener('change', function () {
         let resultNumbers = getResultNumbers($select.selectedIndex)
-        let $resultCurrencies =  [$rub, $usd, $eur, $uah]
+        let $resultCurrencies =  [$value1, $value2, $value3]
+        console.log($resultCurrencies)
         $resultsHolder.classList.add('results-holder')
-        // if($input.value)
+
         function getResultNumbers() {
             let result = [+$input.value];
+            console.log($select.selectedIndex)
             if ($select.selectedIndex === 0) {
-                let rubToUah = resultArray[0].rate * $input.value
-                let rubToUsd = rubToUah / resultArray[1].rate
-                let rubToEur = rubToUah / resultArray[2].rate
-                result.push(rubToUah, rubToUsd, rubToEur)
-            } else if ($select.selectedIndex === 1) {
                 let usdToUah = $input.value * resultArray[1].rate
                 let usdToEur = usdToUah / resultArray[2].rate
                 let usdToRub = usdToUah / resultArray[0].rate
-                result.push(usdToUah, usdToEur, usdToRub)
-            } else if ($select.selectedIndex === 2) {
+                result = [usdToEur, usdToRub, usdToUah]
+            } else if ($select.selectedIndex === 1) {
                 let eurToUah = $input.value * resultArray[2].rate;
                 let eurToUsd = eurToUah / resultArray[1].rate
                 let eurToRub = eurToUah / resultArray[0].rate
-                result.push(eurToUah, eurToUsd, eurToRub)
+                result = [eurToUsd, eurToRub, eurToUah]
+            } else if ($select.selectedIndex === 2) {
+                let rubToUah = resultArray[0].rate * $input.value
+                let rubToUsd = rubToUah / resultArray[1].rate
+                let rubToEur = rubToUah / resultArray[2].rate
+                result = [rubToUsd, rubToEur, rubToUah]
+
             } else if ($select.selectedIndex === 3) {
                 let uahToRub = $input.value / resultArray[0].rate
                 let uahToUsd = $input.value / resultArray[1].rate
                 let uahToEur = $input.value / resultArray[2].rate
-                result.push(uahToRub, uahToUsd, uahToEur)
+                result = [uahToUsd, uahToEur, uahToRub]
+                console.log(result)
             }
             return result
         }
-
+        function showCurrencyNames(i) {
+            for(let item of $resultCurrencies) {
+                console.log(item)
+            }
+        }
+        showCurrencyNames()
         function showResult() {
             let index1 = 0;
             let index2 = 0;
             function cortege(i1, i2) {
-                console.log($resultCurrencies[i1])
                 let n = resultNumbers[i2].toFixed(2)
                 return $resultCurrencies[i1].innerHTML = String(n)
             }
-
-    for (let i = 0; i < 4; i++) {
-        $resultCurrencies[i].innerHTML = cortege(index1++, index2++)
-        $resultsHolder.append( $resultCurrencies[i])
-    }
+            console.log($resultCurrencies[0])
+        for (let i = 0; i < 3; i++) {
+            $resultCurrencies[i].classList.add('convert-result-' + i);
+            $resultCurrencies[i].innerHTML = cortege(index1++, index2++)
+            $resultsHolder.append( $resultCurrencies[i])
         }
+    }
+
+        console.log(document.querySelector('.convert-result-0'))
+        // document.querySelector('.convert-result-0').innerHTML = ''
         $converterBox.append($resultsHolder)
         showResult()
     })
