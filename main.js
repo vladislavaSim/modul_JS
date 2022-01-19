@@ -45,16 +45,19 @@ async function showCurrency() {
 }
 showCurrency().then(resultArray => {
     let $rub = document.createElement('div')
+    $rub.innerHTML = 'RUB'
     let $usd = document.createElement('div')
+    $usd.innerHTML = '<span>USD</span>'
     let $eur = document.createElement('div')
+    $eur.innerHTML = '<span>EUR</span>'
     let $uah = document.createElement('div')
-
+    $uah.innerHTML = '<span>UAH</span>'
 
     document.querySelector('form').addEventListener('change', function () {
         let resultNumbers = getResultNumbers($select.selectedIndex)
         let $resultCurrencies =  [$rub, $usd, $eur, $uah]
         $resultsHolder.classList.add('results-holder')
-
+        console.log($rub)
         function getResultNumbers(i) {
             let result = [+$input.value];
             if ($select.selectedIndex === 0) {
@@ -86,7 +89,8 @@ showCurrency().then(resultArray => {
             let index2 = 0;
             function cortege(i1, i2) {
                 console.log($resultCurrencies[i1])
-                return $resultCurrencies[i1].innerHTML = String(resultNumbers[i2])
+                let n = resultNumbers[i2].toFixed(2)
+                return $resultCurrencies[i1].innerHTML = String(n)
             }
 
     for (let i = 0; i < 4; i++) {
