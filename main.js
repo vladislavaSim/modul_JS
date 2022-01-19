@@ -3,6 +3,19 @@ const $date = document.querySelector('.date-box')
 const $currencyBox = document.querySelector('.currency-box')
 const $input = document.querySelector('#uah');
 const $converterBox = document.querySelector('.converter-box')
+const $select = document.querySelector('.select')
+let $resultsHolder = document.createElement('div')
+
+function defineOptionValues() {
+    const currencyNames = ['usd', 'eur', 'rub', 'uah'];
+    let $options = $select.querySelectorAll('option')
+    for(let i = 0;  i < currencyNames.length; i++) {
+        $options.value = currencyNames[i]
+    }
+    return $options
+}
+defineOptionValues()
+
     fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json')
         .then(response => response.json())
         .then(currencies => {
@@ -31,25 +44,70 @@ async function showCurrency() {
 
 }
 showCurrency().then(resultArray => {
-    let $resultsHolder = document.createElement('div')
     let $rub = document.createElement('div')
     let $usd = document.createElement('div')
     let $eur = document.createElement('div')
-    $input.addEventListener('change', function () {
-        let resRub = $input.value / resultArray[0].rate
-        let resUsd = $input.value / resultArray[1].rate
-        let resEur = $input.value / resultArray[2].rate
-            function showResult() {
-                $rub.innerText = 'RUB ' + resRub.toFixed(2)
-                $usd.innerHTML = 'USD ' + resUsd.toFixed(2)
-                $eur.innerHTML = 'EUR ' + resEur.toFixed(2)
-                $resultsHolder.classList.add('results-holder')
-                $resultsHolder.append($rub, $usd, $eur)
-                $converterBox.append($resultsHolder)
+    let $uah = document.createElement('div')
+
+
+    document.querySelector('form').addEventListener('change', function () {
+        let resultNumbers = getResultNumbers($select.selectedIndex)
+        let $resultCurrencies =  [$rub, $usd, $eur, $uah]
+        $resultsHolder.classList.add('results-holder')
+
+        function getResultNumbers(i) {
+            let result = [+$input.value];
+            if ($select.selectedIndex === 0) {
+                let rubToUah = resultArray[0].rate * $input.value
+                let rubToUsd = rubToUah / resultArray[1].rate
+                let rubToEur = rubToUah / resultArray[2].rate
+                result.push(rubToUah, rubToUsd, rubToEur)
+            } else if ($select.selectedIndex === 1) {
+                let usdToUah = $input.value * resultArray[1].rate
+                let usdToEur = usdToUah / resultArray[2].rate
+                let usdToRub = usdToUah / resultArray[0].rate
+                result.push(usdToUah, usdToEur, usdToRub)
+            } else if ($select.selectedIndex === 2) {
+                let eurToUah = $input.value * resultArray[2].rate;
+                let eurToUsd = eurToUah / resultArray[1].rate
+                let eurToRub = eurToUah / resultArray[0].rate
+                result.push(eurToUah, eurToUsd, eurToRub)
+            } else if ($select.selectedIndex === 3) {
+                let uahToRub = $input.value / resultArray[0].rate
+                let uahToUsd = $input.value / resultArray[1].rate
+                let uahToEur = $input.value / resultArray[2].rate
+                result.push(uahToRub, uahToUsd, uahToEur)
+            }
+            return result
         }
+
+        function showResult() {
+            let index1 = 0;
+            let index2 = 0;
+            function cortege(i1, i2) {
+                console.log($resultCurrencies[i1])
+                return $resultCurrencies[i1].innerHTML = String(resultNumbers[i2])
+            }
+
+    for (let i = 0; i < 4; i++) {
+        $resultCurrencies[i].innerHTML = cortege(index1++, index2++)
+        $resultsHolder.append( $resultCurrencies[i])
+    }
+        }
+        $converterBox.append($resultsHolder)
         showResult()
     })
+
 })
+
+
+
+
+
+
+
+
+
 
 
 
