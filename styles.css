@@ -25,6 +25,13 @@ body {
     font-size: 25px;
     margin: 10px;
 }
+.currency-flags {
+    display: flex;
+    justify-content: space-around;
+}
+.currency-flags img {
+    width: 50px;
+}
 .currency-wrapper {
     display: flex;
     justify-content: center;
