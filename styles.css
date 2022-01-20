@@ -48,6 +48,13 @@ body {
 .currency-box p {
     margin-right: 10px;
 }
+#text {
+    height: 60px;
+}
+#text p {
+    color: red;
+    font-size: 14px;
+}
 form {
     width: 25%;
     display: flex;
