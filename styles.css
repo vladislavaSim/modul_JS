@@ -48,6 +48,13 @@ body {
 .currency-box p {
     margin-right: 10px;
 }
+#text {
+    height: 60px;
+}
+#text p {
+    color: red;
+    font-size: 14px;
+}
 form {
     width: 25%;
     display: flex;
@@ -81,11 +88,8 @@ input:focus, select:focus {
 
 }
 .results-holder div {
-    padding: 5px;
-    border: 2px solid darkgreen;
-    width: 95px;
+    width: fit-content;
     text-align: center;
-    border-radius: 10px;
     margin-bottom: 5px;
     background-color: floralwhite;
     border: 2px solid #0064003d;

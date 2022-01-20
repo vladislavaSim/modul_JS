@@ -5,6 +5,7 @@ const $input = document.querySelector('input');
 const $converterBox = document.querySelector('.converter-box')
 const $select = document.querySelector('.select')
 let $resultsHolder = document.createElement('div')
+let $form = document.querySelector('form')
 
 function defineOptionValues() {
     const currencyNames = ['usd', 'eur', 'rub', 'uah'];
@@ -50,22 +51,24 @@ showCurrency().then(resultArray => {
     let $value2 = document.createElement('div')
     let $value3 = document.createElement('div')
 
-    document.querySelector('form').addEventListener('change', function () {
+    let $message = document.createElement('p');
+    $resultsHolder.classList.add('results-holder')
+
+    $form.addEventListener('input', function () {
         let resultNumbers = getResultNumbers($select.selectedIndex)
-        let $resultCurrencies =  [$value1, $value2, $value3]
-        $resultsHolder.classList.add('results-holder')
+        let $resultCurrencies = [$value1, $value2, $value3]
 
         function getResultNumbers() {
             let result = [+$input.value];
             if ($select.selectedIndex === 0) {
-                let usdToUah = $input.value * resultArray[1].rate
-                let usdToEur = usdToUah / resultArray[0].rate
+                let usdToUah = $input.value * resultArray[0].rate
+                let usdToEur = usdToUah / resultArray[1].rate
                 let usdToRub = usdToUah / resultArray[2].rate
                 result = [[usdToEur, 'eur'], [usdToUah, 'uah'], [usdToRub, 'rub']]
-                console.log(result)
+                console.log(usdToEur)
             } else if ($select.selectedIndex === 1) {
-                let eurToUah = $input.value * resultArray[0].rate;
-                let eurToUsd = eurToUah / resultArray[1].rate
+                let eurToUah = $input.value * resultArray[1].rate;
+                let eurToUsd = eurToUah / resultArray[0].rate
                 let eurToRub = eurToUah / resultArray[2].rate
                 result = [[eurToUsd, 'usd'], [eurToUah, 'uah'], [eurToRub, 'rub']]
             } else if ($select.selectedIndex === 2) {
@@ -73,46 +76,42 @@ showCurrency().then(resultArray => {
                 let rubToUsd = rubToUah / resultArray[1].rate
                 let rubToEur = rubToUah / resultArray[0].rate
                 result = [[rubToUsd, 'usd'], [rubToEur, 'eur'], [rubToUah, 'uah']]
-
             } else if ($select.selectedIndex === 3) {
                 let uahToRub = $input.value / resultArray[2].rate
                 let uahToUsd = $input.value / resultArray[0].rate
                 let uahToEur = $input.value / resultArray[1].rate
                 result = [[uahToUsd, 'usd'], [uahToEur, 'eur'], [uahToRub, 'rub']]
-                console.log(result)
+
             }
             return result
         }
 
+
         function showResult() {
             let index1 = 0;
             let index2 = 0;
+
             function cortege(i1, i2) {
-                let n = resultNumbers[i2][0].toFixed(2)
-                return $resultCurrencies[i1].innerHTML = String(n) + '  ' +resultNumbers[i2][1].toUpperCase()
+                let n;
+                if(/^(?:\d+\,)+\d?$/.test(resultNumbers[i2][0]) || isNaN(resultNumbers[i2][0])) {
+                    n = $resultCurrencies[i1].innerHTML = '0.00'
+                    $message.innerHTML = 'Будь ласка, використовуйте цифри'
+                } else {
+                     n = resultNumbers[i2][0].toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                    $message.innerHTML = ''
+                }
+                return $resultCurrencies[i1].innerHTML = String(n) + '  ' + resultNumbers[i2][1].toUpperCase()
             }
-            console.log($resultCurrencies[0])
-        for (let i = 0; i < 3; i++) {
-            $resultCurrencies[i].classList.add('convert-result-' + i);
-            $resultCurrencies[i].innerHTML = cortege(index1++, index2++)
-            $resultsHolder.append( $resultCurrencies[i])
+
+            for (let i = 0; i < 3; i++) {
+
+                $resultCurrencies[i].classList.add('convert-result-' + i);
+                $resultCurrencies[i].innerHTML = cortege(index1++, index2++)
+                $resultsHolder.append($resultCurrencies[i])
+            }
         }
-    }
+        document.querySelector('#text').append($message)
         $converterBox.append($resultsHolder)
         showResult()
     })
-
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
