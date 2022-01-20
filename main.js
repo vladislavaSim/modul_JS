@@ -58,14 +58,14 @@ showCurrency().then(resultArray => {
         function getResultNumbers() {
             let result = [+$input.value];
             if ($select.selectedIndex === 0) {
-                let usdToUah = $input.value * resultArray[1].rate
-                let usdToEur = usdToUah / resultArray[0].rate
+                let usdToUah = $input.value * resultArray[0].rate
+                let usdToEur = usdToUah / resultArray[1].rate
                 let usdToRub = usdToUah / resultArray[2].rate
                 result = [[usdToEur, 'eur'], [usdToUah, 'uah'], [usdToRub, 'rub']]
-                console.log(result)
+                console.log(usdToEur)
             } else if ($select.selectedIndex === 1) {
-                let eurToUah = $input.value * resultArray[0].rate;
-                let eurToUsd = eurToUah / resultArray[1].rate
+                let eurToUah = $input.value * resultArray[1].rate;
+                let eurToUsd = eurToUah / resultArray[0].rate
                 let eurToRub = eurToUah / resultArray[2].rate
                 result = [[eurToUsd, 'usd'], [eurToUah, 'uah'], [eurToRub, 'rub']]
             } else if ($select.selectedIndex === 2) {
@@ -73,16 +73,17 @@ showCurrency().then(resultArray => {
                 let rubToUsd = rubToUah / resultArray[1].rate
                 let rubToEur = rubToUah / resultArray[0].rate
                 result = [[rubToUsd, 'usd'], [rubToEur, 'eur'], [rubToUah, 'uah']]
-
             } else if ($select.selectedIndex === 3) {
+                console.log(resultArray)
                 let uahToRub = $input.value / resultArray[2].rate
                 let uahToUsd = $input.value / resultArray[0].rate
                 let uahToEur = $input.value / resultArray[1].rate
                 result = [[uahToUsd, 'usd'], [uahToEur, 'eur'], [uahToRub, 'rub']]
-                console.log(result)
+
             }
             return result
         }
+
 
         function showResult() {
             let index1 = 0;
