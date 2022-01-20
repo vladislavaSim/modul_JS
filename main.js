@@ -37,7 +37,6 @@ async function showCurrency() {
                         const $rate = document.createElement('p');
                         $currencyName.innerHTML = item.txt;
                         $rate.innerHTML = item.rate + ' грн';
-                 console.log($rate)
                         $currencyWrapper.append($currencyName, $rate)
                         $currencyBox.append($currencyWrapper);
                         return item
@@ -54,49 +53,43 @@ showCurrency().then(resultArray => {
     document.querySelector('form').addEventListener('change', function () {
         let resultNumbers = getResultNumbers($select.selectedIndex)
         let $resultCurrencies =  [$value1, $value2, $value3]
-        console.log($resultCurrencies)
         $resultsHolder.classList.add('results-holder')
 
         function getResultNumbers() {
             let result = [+$input.value];
-            console.log($select.selectedIndex)
             if ($select.selectedIndex === 0) {
                 let usdToUah = $input.value * resultArray[1].rate
-                let usdToEur = usdToUah / resultArray[2].rate
-                let usdToRub = usdToUah / resultArray[0].rate
-                result = [usdToEur, usdToRub, usdToUah]
+                let usdToEur = usdToUah / resultArray[0].rate
+                let usdToRub = usdToUah / resultArray[2].rate
+                result = [[usdToEur, 'eur'], [usdToUah, 'uah'], [usdToRub, 'rub']]
+                console.log(result)
             } else if ($select.selectedIndex === 1) {
-                let eurToUah = $input.value * resultArray[2].rate;
+                let eurToUah = $input.value * resultArray[0].rate;
                 let eurToUsd = eurToUah / resultArray[1].rate
-                let eurToRub = eurToUah / resultArray[0].rate
-                result = [eurToUsd, eurToRub, eurToUah]
+                let eurToRub = eurToUah / resultArray[2].rate
+                result = [[eurToUsd, 'usd'], [eurToUah, 'uah'], [eurToRub, 'rub']]
             } else if ($select.selectedIndex === 2) {
-                let rubToUah = resultArray[0].rate * $input.value
+                let rubToUah = resultArray[2].rate * $input.value
                 let rubToUsd = rubToUah / resultArray[1].rate
-                let rubToEur = rubToUah / resultArray[2].rate
-                result = [rubToUsd, rubToEur, rubToUah]
+                let rubToEur = rubToUah / resultArray[0].rate
+                result = [[rubToUsd, 'usd'], [rubToEur, 'eur'], [rubToUah, 'uah']]
 
             } else if ($select.selectedIndex === 3) {
-                let uahToRub = $input.value / resultArray[0].rate
-                let uahToUsd = $input.value / resultArray[1].rate
-                let uahToEur = $input.value / resultArray[2].rate
-                result = [uahToUsd, uahToEur, uahToRub]
+                let uahToRub = $input.value / resultArray[2].rate
+                let uahToUsd = $input.value / resultArray[0].rate
+                let uahToEur = $input.value / resultArray[1].rate
+                result = [[uahToUsd, 'usd'], [uahToEur, 'eur'], [uahToRub, 'rub']]
                 console.log(result)
             }
             return result
         }
-        function showCurrencyNames(i) {
-            for(let item of $resultCurrencies) {
-                console.log(item)
-            }
-        }
-        showCurrencyNames()
+
         function showResult() {
             let index1 = 0;
             let index2 = 0;
             function cortege(i1, i2) {
-                let n = resultNumbers[i2].toFixed(2)
-                return $resultCurrencies[i1].innerHTML = String(n)
+                let n = resultNumbers[i2][0].toFixed(2)
+                return $resultCurrencies[i1].innerHTML = String(n) + '  ' +resultNumbers[i2][1].toUpperCase()
             }
             console.log($resultCurrencies[0])
         for (let i = 0; i < 3; i++) {
@@ -105,9 +98,6 @@ showCurrency().then(resultArray => {
             $resultsHolder.append( $resultCurrencies[i])
         }
     }
-
-        console.log(document.querySelector('.convert-result-0'))
-        // document.querySelector('.convert-result-0').innerHTML = ''
         $converterBox.append($resultsHolder)
         showResult()
     })
