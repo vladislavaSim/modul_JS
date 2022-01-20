@@ -89,7 +89,7 @@ showCurrency().then(resultArray => {
             let index1 = 0;
             let index2 = 0;
             function cortege(i1, i2) {
-                let n = resultNumbers[i2][0].toFixed(2)
+                let n = resultNumbers[i2][0].toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
                 return $resultCurrencies[i1].innerHTML = String(n) + '  ' +resultNumbers[i2][1].toUpperCase()
             }
             console.log($resultCurrencies[0])
@@ -102,7 +102,10 @@ showCurrency().then(resultArray => {
         $converterBox.append($resultsHolder)
         showResult()
     })
+    $input.addEventListener('oninput', function () {
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
 
+    })
 })
 
 
