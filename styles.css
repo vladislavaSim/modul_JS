@@ -20,7 +20,7 @@ body {
     justify-content: space-between;
     align-items: baseline;
     border-bottom: 2px solid #0064003d;
-    padding: 10px 15px;
+    padding: 10px 50px;
 }
 .title {
     font-size: 25px;
@@ -84,9 +84,6 @@ input:focus, select:focus {
     outline: 0;
 
 }
-.results-holder {
-
-}
 .results-holder div {
     width: fit-content;
     text-align: center;
@@ -98,3 +95,35 @@ input:focus, select:focus {
     font-size: 17px;
     box-shadow: -1px 4px 6px grey;
 }
+.error {
+    font-size: 21px;
+    position: absolute;
+    top: 20%;
+    left: 37%;
+    background: white;
+    width: 320px;
+    padding: 10px;
+    text-align: center;
+    border: 1px dashed red;
+    border-radius: 10px;
+}
+.loader {
+    width: 80px;
+    height: 80px;
+    border: 8px solid transparent;
+    border-top: 8px solid #0c8637;
+    border-radius: 50%;
+    position: absolute;
+    top: 30%;
+    right: 50%;
+}
+
+.spin {
+    animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% {
+        transform: rotate(360deg);
+    }}
