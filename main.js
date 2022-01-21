@@ -5,6 +5,7 @@ const $converterBox = document.querySelector('.converter-box')
 const $select = document.querySelector('.select')
 const $resultsHolder = document.createElement('div')
 const $form = document.querySelector('form')
+let $spinner = document.querySelector('.loader');
 
 function defineOptionValues() {
     const currencyNames = ['usd', 'eur', 'rub', 'uah'];
@@ -15,11 +16,11 @@ function defineOptionValues() {
     return $options
 }
 defineOptionValues()
-
 async function showCurrency() {
     let response = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json')
     try {
         let allCurrencies = await response.json()
+        $spinner.style.display = 'none';
         let result = allCurrencies.filter((currency) => currency.r030 === 978 || currency.r030 === 643 ||  currency.r030 === 840)
         let [rub, usd, eur] = result;
         let newArr = [usd, eur, rub]
@@ -41,7 +42,6 @@ async function showCurrency() {
         $error.classList.add('error')
         $error.innerHTML = 'Лишенько, щось пішло не так :(';
         $currencyBox.append($error)
-        console.log('errrrrrrrrr')
     }
 }
 showCurrency().then(resultArray => {

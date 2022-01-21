@@ -107,3 +107,23 @@ input:focus, select:focus {
     border: 1px dashed red;
     border-radius: 10px;
 }
+.loader {
+    width: 80px;
+    height: 80px;
+    border: 8px solid transparent;
+    border-top: 8px solid #0c8637;
+    border-radius: 50%;
+    position: absolute;
+    top: 30%;
+    right: 50%;
+}
+
+.spin {
+    animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% {
+        transform: rotate(360deg);
+    }}
