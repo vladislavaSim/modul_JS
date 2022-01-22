@@ -6,6 +6,7 @@ const $select = document.querySelector('.select')
 const $resultsHolder = document.createElement('div')
 const $form = document.querySelector('form')
 let $spinner = document.querySelector('.loader');
+let $modal = document.querySelector('.modal-layer')
 
 function defineOptionValues() {
     const currencyNames = ['usd', 'eur', 'rub', 'uah'];
@@ -109,4 +110,10 @@ showCurrency().then(resultArray => {
         $converterBox.append($resultsHolder)
         showResult()
     })
+})
+document.querySelector('.contact').addEventListener('click', () => {
+    $modal.style.display = 'block'
+})
+document.querySelector('.closer').addEventListener('click', () => {
+    $modal.style.display = 'none'
 })
