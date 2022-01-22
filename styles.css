@@ -45,10 +45,14 @@ body {
     width: 50%;
     margin: 0 auto;
 }
+.currency-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
 .currency-box {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
 }
 .currency-box p {
     margin-right: 10px;
@@ -80,6 +84,7 @@ input {
     border-radius: 10px;
     font-size: 17px;
     box-shadow: -1px 4px 6px grey;
+    margin-right: 2px;
 }
 
 input:focus, select:focus {
@@ -151,7 +156,7 @@ select:hover {
     border: 1px solid white;
     border-radius: 10px;
 }
-.contact:hover {
+.contact:hover, .contact:active {
     cursor: pointer;
     background-color: white;
     color: #0c8637;
@@ -186,7 +191,7 @@ select:hover {
     font-size: 17px;
     box-shadow: -1px 4px 6px grey;
 }
-.closer:hover {
+.closer:hover, .closer:active {
     color: green;
     font-weight: bolder;
     cursor: pointer;
@@ -209,7 +214,7 @@ select:hover {
     font-weight: bolder;
     margin-left: 10px;
 }
-.modal-container a:hover {
+.modal-container a:hover, .modal-container a:active {
     cursor: pointer;
     background-color: #0c8637;
     color: white;
@@ -218,3 +223,97 @@ select:hover {
     font-weight: bolder;
     transform: translateY(1px);
 }
+@media screen and (max-width: 960px){
+    .currency-wrapper {
+        flex-direction: column;
+    }
+    .currency-wrapper p {
+        margin: 10px 0 5px;
+        text-align: center;
+    }
+    .modal-container {
+        width: 65%;
+        min-height: 28%;
+        margin-top: 30%;
+    }
+}
+@media screen and (max-width: 780px) {
+    .modal-container {
+        width: 90%;
+    }
+}
+@media screen and (max-width: 768px){
+    .title, .currency-box p, #text, #text p, select, option, .results-holder div {
+        font-size: 1.1rem;
+    }
+    .container {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    .currency-container {
+        margin-bottom: 35px;
+    }
+
+    .modal-container, .modal-container .title {
+        font-size: 1.4rem;
+    }
+}
+@media screen and (max-width: 680px){
+    .currency-box p {
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 590px){
+    .currency-container {
+        justify-content: flex-start;
+        flex-direction: row;
+    }
+    .currency-flags, .currency-box {
+        flex-direction: column;
+    }
+    .currency-box {
+        width: 100%;
+    }
+    .currency-box p {
+        font-size: 1.1rem;
+        width: 50%;
+        text-align: left;
+        padding-left: 10px;
+    }
+    .currency-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+    .modal-container {
+        margin-top: 50%;
+        width: 95%;
+        min-height: 28%;
+    }
+    .closer {
+        right: -93%;
+    }
+    .question {
+        margin-bottom: 10%;
+    }
+    .modal-container a {
+        font-size: 1.3rem;
+    }
+}
+@media screen and (max-width: 475px){
+    .modal-container, .modal-container .title {
+        font-size: 1.4rem;
+    }
+    .modal-container {
+        min-height: 40%;
+    }
+}
+@media screen and (max-width: 360px){
+    .header {
+        padding: 3px;
+    }
+}
+
+
+
