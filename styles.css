@@ -76,6 +76,7 @@ select, option {
     border: 2px solid #0064003d;
     border-radius: 10px;
     box-shadow: -1px 4px 6px grey;
+    background-color: white;
 }
 input {
     display: block;
@@ -190,6 +191,7 @@ select:hover {
     border-radius: 10px;
     font-size: 17px;
     box-shadow: -1px 4px 6px grey;
+    background-color: white;
 }
 .closer:hover, .closer:active {
     color: green;
